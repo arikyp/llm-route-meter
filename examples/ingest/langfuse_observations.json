@@ -1,0 +1,49 @@
+{
+  "data": [
+    {
+      "id": "obs_support_001",
+      "name": "support_summary",
+      "model": "managed-small",
+      "startTime": "2026-06-23T10:00:00Z",
+      "endTime": "2026-06-23T10:00:02.400Z",
+      "usageDetails": {
+        "input": 1800,
+        "cachedInput": 120,
+        "output": 420
+      },
+      "costDetails": {
+        "total": 0.065
+      },
+      "metadata": {
+        "route_id": "support_summary",
+        "feature": "support-summary",
+        "batchable": true,
+        "quality_signal": "schema_valid",
+        "template_fingerprint": "tpl_support_summary"
+      }
+    },
+    {
+      "id": "obs_support_002",
+      "name": "support_summary",
+      "model": "managed-small",
+      "startTime": "2026-06-23T10:01:00Z",
+      "endTime": "2026-06-23T10:01:03.100Z",
+      "usageDetails": {
+        "input": 1900,
+        "cachedInput": 100,
+        "output": 430
+      },
+      "costDetails": {
+        "total": 0.069
+      },
+      "metadata": {
+        "route_id": "support_summary",
+        "feature": "support-summary",
+        "batchable": true,
+        "quality_signal": "schema_valid",
+        "template_fingerprint": "tpl_support_summary",
+        "retry_count": 1
+      }
+    }
+  ]
+}

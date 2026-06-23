@@ -4,6 +4,8 @@ import argparse
 import json
 from pathlib import Path
 
+from .adapters import ADAPTERS, convert_source
+from .adapters.common import load_source
 from .guard import assert_no_sentinels, event_to_json
 from .mock_lab import run_mock_lab
 from .report import write_html_report
@@ -35,6 +37,15 @@ def cmd_mock_lab(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ingest(args: argparse.Namespace) -> int:
+    events = convert_source(args.source, load_source(args.input))
+    serialized = "\n".join(event_to_json(event) for event in events)
+    assert_no_sentinels(serialized, args.sentinel or [])
+    Path(args.output).write_text(serialized + ("\n" if serialized else ""), encoding="utf-8")
+    print(f"ingested {len(events)} events from {args.source}")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="llm-route-meter")
     sub = parser.add_subparsers(required=True)
@@ -48,6 +59,13 @@ def main(argv: list[str] | None = None) -> int:
     report.add_argument("--input", required=True)
     report.add_argument("--output", required=True)
     report.set_defaults(func=cmd_report)
+
+    ingest = sub.add_parser("ingest")
+    ingest.add_argument("--source", required=True, choices=sorted(ADAPTERS))
+    ingest.add_argument("--input", required=True)
+    ingest.add_argument("--output", required=True)
+    ingest.add_argument("--sentinel", action="append", default=[])
+    ingest.set_defaults(func=cmd_ingest)
 
     validate = sub.add_parser("validate")
     validate.add_argument("--input", required=True)

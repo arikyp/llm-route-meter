@@ -122,6 +122,11 @@
     },
     "payload_policy": {
       "const": "metadata_only"
+    },
+    "aggregation_count": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of original requests represented by this event when importing aggregate exports."
     }
   }
 }

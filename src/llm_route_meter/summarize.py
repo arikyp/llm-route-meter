@@ -29,6 +29,10 @@ def load_events(path: str | Path) -> list[dict[str, Any]]:
     return events
 
 
+def event_weight(event: dict[str, Any]) -> int:
+    return max(1, int(event.get("aggregation_count", 1)))
+
+
 def summarize_events(events: list[dict[str, Any]]) -> dict[str, Any]:
     by_route: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for event in events:
@@ -41,23 +45,27 @@ def summarize_events(events: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def summarize_route(route_id: str, route_events: list[dict[str, Any]]) -> dict[str, Any]:
-    request_count = len(route_events)
+    request_count = sum(event_weight(e) for e in route_events)
     total_cost = sum(float(e.get("estimated_cost_usd", 0)) for e in route_events)
     input_tokens = sum(int(e.get("input_tokens", 0)) for e in route_events)
     cached_tokens = sum(int(e.get("cached_input_tokens", 0)) for e in route_events)
     output_tokens = sum(int(e.get("output_tokens", 0)) for e in route_events)
     retries = sum(int(e.get("retry_count", 0)) for e in route_events)
-    fallbacks = sum(1 for e in route_events if e.get("fallback_used"))
-    errors = sum(1 for e in route_events if e.get("status") != "success")
-    batchable = sum(1 for e in route_events if e.get("batchable"))
-    quality_known = [e for e in route_events if e.get("quality_signal") not in UNKNOWN_QUALITY_SIGNALS]
-    accepted = sum(1 for e in quality_known if e.get("quality_signal") in ACCEPTED_QUALITY_SIGNALS)
+    fallbacks = sum(event_weight(e) for e in route_events if e.get("fallback_used"))
+    errors = sum(event_weight(e) for e in route_events if e.get("status") != "success")
+    batchable = sum(event_weight(e) for e in route_events if e.get("batchable"))
+    quality_known_count = sum(event_weight(e) for e in route_events if e.get("quality_signal") not in UNKNOWN_QUALITY_SIGNALS)
+    accepted = sum(event_weight(e) for e in route_events if e.get("quality_signal") in ACCEPTED_QUALITY_SIGNALS)
     latencies = [float(e.get("latency_ms", 0)) for e in route_events]
-    template_counts = Counter(e.get("template_fingerprint") for e in route_events if e.get("template_fingerprint"))
+    template_counts: Counter[str] = Counter()
+    for event in route_events:
+        template = event.get("template_fingerprint")
+        if template:
+            template_counts[str(template)] += event_weight(event)
     top_template_share = max(template_counts.values()) * 100 / request_count if request_count and template_counts else 0.0
     cached_share = cached_tokens * 100 / input_tokens if input_tokens else 0.0
     batchable_share = batchable * 100 / request_count if request_count else 0.0
-    accepted_rate = accepted * 100 / len(quality_known) if quality_known else None
+    accepted_rate = accepted * 100 / quality_known_count if quality_known_count else None
 
     ranked_waste = []
     if top_template_share >= 45 and cached_share < 40:

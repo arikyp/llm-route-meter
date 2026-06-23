@@ -74,6 +74,19 @@ Validate no forbidden payload fields appear:
 python -m llm_route_meter.cli validate --input examples/mock_events.jsonl
 ```
 
+## Ingest Exported Metadata
+
+Convert exported metadata from Langfuse, LiteLLM, or OpenAI usage buckets into local meter events:
+
+```bash
+python -m llm_route_meter.cli ingest \
+  --source langfuse \
+  --input examples/ingest/langfuse_observations.json \
+  --output meter-events.jsonl
+```
+
+Supported sources: `langfuse`, `litellm`, and `openai_usage`. See [docs/ingest-adapters.md](docs/ingest-adapters.md).
+
 ## Python Wrapper Example
 
 ```python

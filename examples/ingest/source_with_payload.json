@@ -1,0 +1,17 @@
+{
+  "id": "bad_001",
+  "model": "managed-small",
+  "messages": [
+    {
+      "role": "user",
+      "content": "PROMPT_SECRET_SENTINEL"
+    }
+  ],
+  "usageDetails": {
+    "input": 10,
+    "output": 5
+  },
+  "metadata": {
+    "route_id": "bad_route"
+  }
+}
