@@ -117,6 +117,10 @@ const response = await meteredCall({
 - `PRIVATE_BENCHMARK`: spend, route stability, and quality signal are strong enough for a private inference benchmark.
 - `NO_GO`: quality evidence or route attribution is missing, or quality is below threshold.
 
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for the public implementation path. The roadmap only covers open-source meter capabilities; commercial interpretation, benchmark packs, and partner workflows are intentionally outside this repository.
+
 ## License
 
 Apache-2.0.
