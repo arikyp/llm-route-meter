@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LLM Route Meter Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "observed_at",
+    "route_id",
+    "provider",
+    "model",
+    "request_id_hash",
+    "input_tokens",
+    "output_tokens",
+    "status",
+    "latency_ms",
+    "estimated_cost_usd",
+    "payload_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "meter_event_v1"
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "route_id": {
+      "type": "string"
+    },
+    "feature": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "request_id_hash": {
+      "type": "string"
+    },
+    "tenant_hash": {
+      "type": "string"
+    },
+    "environment": {
+      "type": "string"
+    },
+    "input_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cached_input_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "output_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reasoning_tokens": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "estimated_cost_usd": {
+      "type": "number",
+      "minimum": 0
+    },
+    "latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "time_to_first_token_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "status": {
+      "enum": [
+        "success",
+        "error",
+        "timeout",
+        "cancelled"
+      ]
+    },
+    "error_type": {
+      "type": "string"
+    },
+    "retry_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "fallback_used": {
+      "type": "boolean"
+    },
+    "fallback_model": {
+      "type": "string"
+    },
+    "streaming": {
+      "type": "boolean"
+    },
+    "batchable": {
+      "type": "boolean"
+    },
+    "quality_signal": {
+      "enum": [
+        "unknown",
+        "accepted",
+        "rejected",
+        "schema_valid",
+        "schema_invalid",
+        "human_pass",
+        "human_fail"
+      ]
+    },
+    "template_fingerprint": {
+      "type": "string",
+      "description": "Hash only; no prompt text."
+    },
+    "tool_schema_fingerprint": {
+      "type": "string",
+      "description": "Hash only; no schema text."
+    },
+    "payload_policy": {
+      "const": "metadata_only"
+    }
+  }
+}

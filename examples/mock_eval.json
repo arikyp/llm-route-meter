@@ -1,0 +1,32 @@
+{
+  "schema_version": "route_meter_mock_lab_eval_v1",
+  "passed": 4,
+  "total": 4,
+  "decision": "support",
+  "results": [
+    {
+      "route_id": "support_summary_waste",
+      "expected_decision": "MANAGED_OPTIMIZE",
+      "actual_decision": "MANAGED_OPTIMIZE",
+      "status": "pass"
+    },
+    {
+      "route_id": "extraction_private_ready",
+      "expected_decision": "PRIVATE_BENCHMARK",
+      "actual_decision": "PRIVATE_BENCHMARK",
+      "status": "pass"
+    },
+    {
+      "route_id": "tiny_chat_no_action",
+      "expected_decision": "NO_ACTION",
+      "actual_decision": "NO_ACTION",
+      "status": "pass"
+    },
+    {
+      "route_id": "summary_no_quality_no_go",
+      "expected_decision": "NO_GO",
+      "actual_decision": "NO_GO",
+      "status": "pass"
+    }
+  ]
+}

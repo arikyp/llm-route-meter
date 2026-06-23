@@ -1,0 +1,127 @@
+{
+  "schema_version": "route_meter_summary_v1",
+  "routes": [
+    {
+      "schema_version": "route_ledger_v1",
+      "route_id": "extraction_private_ready",
+      "summary": {
+        "request_count": 80,
+        "estimated_cost_usd": 148.0,
+        "input_tokens": 416000,
+        "cached_input_tokens": 312000,
+        "cached_input_share_pct": 75.0,
+        "output_tokens": 70400,
+        "p50_latency_ms": 3460.0,
+        "p95_latency_ms": 3820.0,
+        "retry_count": 0,
+        "fallback_count": 0,
+        "error_count": 0,
+        "batchable_request_share_pct": 0.0,
+        "top_template_share_pct": 87.5,
+        "accepted_output_rate_pct": 100.0
+      },
+      "ranked_waste": [],
+      "decision": "PRIVATE_BENCHMARK",
+      "private_benchmark_readiness": "candidate",
+      "reason": "Spend, template stability, and quality signal are strong enough for private inference benchmarking.",
+      "payload_policy": "metadata_only"
+    },
+    {
+      "schema_version": "route_ledger_v1",
+      "route_id": "summary_no_quality_no_go",
+      "summary": {
+        "request_count": 70,
+        "estimated_cost_usd": 112.0,
+        "input_tokens": 301000,
+        "cached_input_tokens": 238000,
+        "cached_input_share_pct": 79.07,
+        "output_tokens": 50400,
+        "p50_latency_ms": 2970.0,
+        "p95_latency_ms": 3240.0,
+        "retry_count": 0,
+        "fallback_count": 0,
+        "error_count": 0,
+        "batchable_request_share_pct": 0.0,
+        "top_template_share_pct": 94.29,
+        "accepted_output_rate_pct": null
+      },
+      "ranked_waste": [],
+      "decision": "NO_GO",
+      "private_benchmark_readiness": "not_yet",
+      "reason": "Spend and route stability are interesting, but there is no quality oracle for a benchmark decision.",
+      "payload_policy": "metadata_only"
+    },
+    {
+      "schema_version": "route_ledger_v1",
+      "route_id": "support_summary_waste",
+      "summary": {
+        "request_count": 60,
+        "estimated_cost_usd": 3.9,
+        "input_tokens": 108000,
+        "cached_input_tokens": 13560,
+        "cached_input_share_pct": 12.56,
+        "output_tokens": 25200,
+        "p50_latency_ms": 3440.0,
+        "p95_latency_ms": 4480.0,
+        "retry_count": 6,
+        "fallback_count": 4,
+        "error_count": 4,
+        "batchable_request_share_pct": 50.0,
+        "top_template_share_pct": 100.0,
+        "accepted_output_rate_pct": 95.0
+      },
+      "ranked_waste": [
+        {
+          "rank": 1,
+          "category": "cache_miss",
+          "signal": "Top template is 100.0% of calls but cached input share is 12.6%.",
+          "first_fix": "Stabilize and front-load static system/tool/schema prefix before dynamic content.",
+          "confidence": "medium"
+        },
+        {
+          "rank": 2,
+          "category": "batchable_work",
+          "signal": "50.0% of requests are marked batchable.",
+          "first_fix": "Test managed batch/async processing before private inference.",
+          "confidence": "high"
+        },
+        {
+          "rank": 3,
+          "category": "retry_fallback_spend",
+          "signal": "Observed 6 retries and 4 fallback calls in 60 requests.",
+          "first_fix": "Add idempotency, timeout classes, and a single fallback policy to prevent duplicate spend.",
+          "confidence": "medium"
+        }
+      ],
+      "decision": "MANAGED_OPTIMIZE",
+      "private_benchmark_readiness": "not_yet",
+      "reason": "Fix the ranked managed-API waste before private inference benchmarking.",
+      "payload_policy": "metadata_only"
+    },
+    {
+      "schema_version": "route_ledger_v1",
+      "route_id": "tiny_chat_no_action",
+      "summary": {
+        "request_count": 35,
+        "estimated_cost_usd": 0.035,
+        "input_tokens": 21000,
+        "cached_input_tokens": 700,
+        "cached_input_share_pct": 3.33,
+        "output_tokens": 4550,
+        "p50_latency_ms": 1060.0,
+        "p95_latency_ms": 1220.0,
+        "retry_count": 0,
+        "fallback_count": 0,
+        "error_count": 0,
+        "batchable_request_share_pct": 0.0,
+        "top_template_share_pct": 2.86,
+        "accepted_output_rate_pct": 100.0
+      },
+      "ranked_waste": [],
+      "decision": "NO_ACTION",
+      "private_benchmark_readiness": "not_yet",
+      "reason": "No dominant waste source found in the supplied metadata.",
+      "payload_policy": "metadata_only"
+    }
+  ]
+}

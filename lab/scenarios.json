@@ -1,0 +1,47 @@
+{
+  "schema_version": "route_meter_mock_scenarios_v1",
+  "description": "Synthetic routes used by the mock lab to validate whether metadata-only signals can separate managed optimization, private benchmark readiness, no-action, and no-go cases.",
+  "scenarios": [
+    {
+      "route_id": "support_summary_waste",
+      "expected_decision": "MANAGED_OPTIMIZE",
+      "signals": [
+        "low cached input share despite stable template",
+        "batchable work",
+        "retries/fallbacks",
+        "timeouts"
+      ],
+      "why_it_matters": "Tests whether metadata can identify spend that should be fixed on the managed API before any private inference benchmark."
+    },
+    {
+      "route_id": "extraction_private_ready",
+      "expected_decision": "PRIVATE_BENCHMARK",
+      "signals": [
+        "high route spend",
+        "stable template",
+        "strong cached-token share",
+        "known accepted quality signal"
+      ],
+      "why_it_matters": "Tests whether metadata can identify routes ready for a private inference benchmark without inspecting payloads."
+    },
+    {
+      "route_id": "tiny_chat_no_action",
+      "expected_decision": "NO_ACTION",
+      "signals": [
+        "low spend",
+        "no dominant waste category"
+      ],
+      "why_it_matters": "Tests whether the meter avoids over-recommending work on low-value routes."
+    },
+    {
+      "route_id": "summary_no_quality_no_go",
+      "expected_decision": "NO_GO",
+      "signals": [
+        "high spend",
+        "stable route",
+        "unknown quality signal"
+      ],
+      "why_it_matters": "Tests whether the meter blocks migration recommendations when no quality oracle exists."
+    }
+  ]
+}

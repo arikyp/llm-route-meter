@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LLM Route Meter Route Ledger v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version",
+    "route_id",
+    "summary",
+    "ranked_waste",
+    "decision",
+    "payload_policy"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "route_ledger_v1"
+    },
+    "route_id": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "object"
+    },
+    "ranked_waste": {
+      "type": "array"
+    },
+    "decision": {
+      "enum": [
+        "NO_ACTION",
+        "MANAGED_OPTIMIZE",
+        "PRIVATE_BENCHMARK",
+        "NO_GO"
+      ]
+    },
+    "private_benchmark_readiness": {
+      "enum": [
+        "candidate",
+        "not_yet"
+      ]
+    },
+    "payload_policy": {
+      "const": "metadata_only"
+    }
+  }
+}
